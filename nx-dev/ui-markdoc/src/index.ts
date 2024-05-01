@@ -56,7 +56,7 @@ import { VideoLink, videoLink } from './lib/tags/video-link.component';
 import { Pill } from './lib/tags/pill.component';
 import { pill } from './lib/tags/pill.schema';
 import { fence } from './lib/nodes/fence.schema';
-import { FenceWrapper } from './lib/nodes/fence-wrapper.component';
+import FenceWrapper from './lib/nodes/fence-wrapper.component';
 
 // TODO fix this export
 export { GithubRepository } from './lib/tags/github-repository.component';

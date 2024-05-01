@@ -11,10 +11,15 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "strictNullChecks": true,
-    "incremental": true
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "files": [],
-  "include": [],
+  "include": [".next/types/**/*.ts"],
   "references": [
     {
       "path": "./tsconfig.app.json"

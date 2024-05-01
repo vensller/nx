@@ -1,3 +1,4 @@
+'use client';
 export * from './lib/announcement-banner';
 export * from './lib/headers/documentation-header';
 export * from './lib/breadcrumbs';

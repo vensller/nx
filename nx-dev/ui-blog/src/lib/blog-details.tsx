@@ -1,3 +1,4 @@
+'use client';
 import Link from 'next/link';
 import { BlogPostDataEntry } from '@nx/nx-dev/data-access-documents/node-only';
 import Image from 'next/image';

@@ -35,7 +35,7 @@ export class GraphService {
     rankDir: 'TB' | 'LR' = 'TB',
     public getTaskInputs: (
       taskId: string
-    ) => Promise<Record<string, string[]>> = undefined
+    ) => Promise<Record<string, string[]>> = () => Promise.resolve({})
   ) {
     use(cytoscapeDagre);
     use(popper);
@@ -78,7 +78,7 @@ export class GraphService {
       this.renderGraph.clearFocussedElement();
     }
 
-    let elementsToSendToRender: CollectionReturnValue;
+    let elementsToSendToRender: CollectionReturnValue | undefined;
 
     switch (event.type) {
       case 'notifyGraphInitGraph':
@@ -230,7 +230,7 @@ export class GraphService {
 
     this.broadcast({ type: 'GraphRegenerated' });
 
-    let elementsToSendToRender: CollectionReturnValue;
+    let elementsToSendToRender: CollectionReturnValue | undefined;
     switch (event.type) {
       case 'notifyTaskGraphSetProjects':
         this.taskTraversalGraph.setProjects(event.projects, event.taskGraphs);

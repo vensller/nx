@@ -2,11 +2,12 @@
 import { NextSeo } from 'next-seo';
 import { usePathname } from 'next/navigation';
 
-export default function SeoComponent() {
+export default function BlogSeoComponent() {
   return (
     <NextSeo
       title="Nx Blog - Updates from the Nx & Nx Cloud team"
       description="Latest news from the Nx & Nx Cloud core team"
+      useAppDir={true}
       openGraph={{
         url: `https://nx.dev ${usePathname()}`,
         title: 'Nx Blog - Updates from the Nx & Nx Cloud team',

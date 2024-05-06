@@ -24,6 +24,7 @@ export function DebouncedTextInput({
 
   function onTextFilterKeyUp(event: KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter') {
+      // @ts-ignore
       onTextInputChange(event.currentTarget.value);
     }
   }
@@ -68,6 +69,7 @@ export function DebouncedTextInput({
         name="filter"
         value={currentTextFilter}
         onKeyUp={onTextFilterKeyUp}
+        // @ts-ignore
         onChange={(event) => onTextInputChange(event.currentTarget.value)}
       ></input>
       {currentTextFilter.length > 0 ? (
@@ -75,7 +77,7 @@ export function DebouncedTextInput({
           data-cy="textFilterReset"
           type="reset"
           onClick={resetClicked}
-          className="absolute top-1 right-1 inline-block rounded-md bg-slate-50 p-1 text-slate-400 dark:bg-slate-800"
+          className="absolute right-1 top-1 inline-block rounded-md bg-slate-50 p-1 text-slate-400 dark:bg-slate-800"
         >
           <BackspaceIcon className="h-5 w-5"></BackspaceIcon>
         </button>

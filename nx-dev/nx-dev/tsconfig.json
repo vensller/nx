@@ -19,7 +19,10 @@
     ]
   },
   "files": [],
-  "include": [".next/types/**/*.ts"],
+  "include": [
+    ".next/types/**/*.ts",
+    "../../dist/nx-dev/nx-dev/.next/types/**/*.ts"
+  ],
   "references": [
     {
       "path": "./tsconfig.app.json"

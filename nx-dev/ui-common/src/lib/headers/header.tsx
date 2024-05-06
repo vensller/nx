@@ -8,7 +8,6 @@ import {
 } from '@heroicons/react/24/outline';
 import cx from 'classnames';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { Fragment, useEffect, useState } from 'react';
 import { ButtonLink } from '../button';
 import {
@@ -440,6 +439,7 @@ export function Header(): JSX.Element {
                             Documentation
                           </Link>
                           <Link
+                            prefetch={true}
                             href="/blog"
                             title="Blog"
                             className="block py-4 font-medium leading-tight hover:text-blue-500 dark:text-slate-200 dark:hover:text-sky-500"

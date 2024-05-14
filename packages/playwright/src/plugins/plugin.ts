@@ -19,7 +19,7 @@ import { calculateHashForCreateNodes } from '@nx/devkit/src/utils/calculate-hash
 import type { PlaywrightTestConfig } from '@playwright/test';
 import { getFilesInDirectoryUsingContext } from 'nx/src/utils/workspace-context';
 import { minimatch } from 'minimatch';
-import { projectGraphCacheDirectory } from 'nx/src/utils/cache-directory';
+import { workspaceDataDirectory } from 'nx/src/utils/cache-directory';
 import { getLockFileName } from '@nx/js';
 import { loadConfigFile } from '@nx/devkit/src/utils/config-utils';
 
@@ -33,7 +33,7 @@ interface NormalizedOptions {
   ciTargetName?: string;
 }
 
-const cachePath = join(projectGraphCacheDirectory, 'playwright.hash');
+const cachePath = join(workspaceDataDirectory, 'playwright.hash');
 
 const targetsCache = readTargetsCache();
 

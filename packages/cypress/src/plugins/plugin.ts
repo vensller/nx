@@ -19,7 +19,7 @@ import { getNamedInputs } from '@nx/devkit/src/utils/get-named-inputs';
 import { existsSync, readdirSync } from 'fs';
 import { globWithWorkspaceContext } from 'nx/src/utils/workspace-context';
 import { calculateHashForCreateNodes } from '@nx/devkit/src/utils/calculate-hash-for-create-nodes';
-import { projectGraphCacheDirectory } from 'nx/src/utils/cache-directory';
+import { workspaceDataDirectory } from 'nx/src/utils/cache-directory';
 import { NX_PLUGIN_OPTIONS } from '../utils/constants';
 import { loadConfigFile } from '@nx/devkit/src/utils/config-utils';
 
@@ -30,7 +30,7 @@ export interface CypressPluginOptions {
   componentTestingTargetName?: string;
 }
 
-const cachePath = join(projectGraphCacheDirectory, 'cypress.hash');
+const cachePath = join(workspaceDataDirectory, 'cypress.hash');
 const targetsCache = readTargetsCache();
 
 function readTargetsCache(): Record<string, CypressTargets> {

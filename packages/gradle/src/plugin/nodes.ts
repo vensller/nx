@@ -9,7 +9,7 @@ import {
 import { calculateHashForCreateNodes } from '@nx/devkit/src/utils/calculate-hash-for-create-nodes';
 import { existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { projectGraphCacheDirectory } from 'nx/src/utils/cache-directory';
+import { workspaceDataDirectory } from 'nx/src/utils/cache-directory';
 
 import { getGradleExecFile } from '../utils/exec-gradle';
 import { getGradleReport } from '../utils/get-gradle-report';
@@ -33,7 +33,7 @@ export interface GradlePluginOptions {
   [taskTargetName: string]: string | undefined;
 }
 
-const cachePath = join(projectGraphCacheDirectory, 'gradle.hash');
+const cachePath = join(workspaceDataDirectory, 'gradle.hash');
 const targetsCache = readTargetsCache();
 type GradleTargets = Record<
   string,

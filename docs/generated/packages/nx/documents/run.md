@@ -41,25 +41,25 @@ Run the target build for the myapp project, with production configuration:
  nx run myapp:build:production
 ```
 
-Preview the task graph that Nx would run inside a webview.:
+Preview the task graph that Nx would run inside a webview:
 
 ```shell
  nx run myapp:build --graph
 ```
 
-Save the task graph to a file.:
+Save the task graph to a file:
 
 ```shell
  nx run myapp:build --graph=output.json
 ```
 
-Print the task graph to the console.:
+Print the task graph to the console:
 
 ```shell
  nx run myapp:build --graph=stdout
 ```
 
-Run's a target named build:test for the myapp project. Note the quotes around the target name to prevent "test" from being considered a configuration.:
+Run's a target named build:test for the myapp project. Note the quotes around the target name to prevent "test" from being considered a configuration:
 
 ```shell
  nx run myapp:"build:test"

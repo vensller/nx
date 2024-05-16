@@ -38,12 +38,6 @@ Generate a static website with project graph into an html file, accompanied by a
 Print the project graph as JSON to the console:
 
 ```shell
- nx graph --file=stdout
-```
-
-Print the project graph as JSON to the console:
-
-```shell
  nx graph --print
 ```
 

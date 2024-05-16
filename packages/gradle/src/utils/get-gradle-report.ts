@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
-import { join, relative } from 'node:path';
+import { dirname, join, relative } from 'node:path';
+import * as glob from 'glob';
 
 import { normalizePath, workspaceRoot } from '@nx/devkit';
 
@@ -17,6 +18,8 @@ export interface GradleReport {
   gradleFileToOutputDirsMap: Map<string, Map<string, string>>;
   gradleProjectToTasksTypeMap: Map<string, Map<string, string>>;
   gradleProjectToProjectName: Map<string, string>;
+  settingsFileToProjectNameMap?: Map<string, string>;
+  projectNames?: Set<string>;
 }
 
 let gradleReportCache: GradleReport;
@@ -33,19 +36,82 @@ export function getGradleReport(): GradleReport {
   const gradleProjectReportStart = performance.mark(
     'gradleProjectReport:start'
   );
-  const projectReportLines = execGradle(['projectReport'], {
-    cwd: workspaceRoot,
-  })
-    .toString()
-    .split(newLineSeparator);
+
+  const { projectReportLines, settingsFileToProjectNameMap, projectNames } =
+    runProjectsForSettingsFiles();
+  gradleReportCache = processProjectReports(projectReportLines);
+  gradleReportCache = {
+    ...gradleReportCache,
+    settingsFileToProjectNameMap,
+    projectNames,
+  };
+
   const gradleProjectReportEnd = performance.mark('gradleProjectReport:end');
   performance.measure(
     'gradleProjectReport',
     gradleProjectReportStart.name,
     gradleProjectReportEnd.name
   );
-  gradleReportCache = processProjectReports(projectReportLines);
   return gradleReportCache;
+}
+
+function runProjectsForSettingsFiles(): {
+  projectReportLines: string[];
+  settingsFileToProjectNameMap: Map<string, string>;
+  projectNames: Set<string>;
+} {
+  const settingFiles: string[] = glob.sync('**/settings.{gradle.kts,gradle}');
+  let projectReportLines = [];
+  const settingsFileToProjectNameMap = new Map<string, string>();
+  const projectNames = new Set<string>();
+  settingFiles.forEach((settingFile) => {
+    const settingDir = dirname(settingFile);
+    try {
+      projectReportLines = projectReportLines.concat(
+        execGradle(['projectReport'], {
+          cwd: settingDir,
+        })
+          .toString()
+          .split(newLineSeparator)
+      );
+    } catch (e) {
+      console.error(
+        `Error running projectReport for ${settingDir}. Please make sure the projectReport task is available in your build script.`,
+        e
+      );
+    }
+
+    let projectsLines;
+    try {
+      projectsLines = execGradle(['projects'], {
+        cwd: settingDir,
+      })
+        .toString()
+        .split(newLineSeparator);
+    } catch (e) {
+      console.error(
+        `Error running projects for ${settingDir}. Please make sure the projects task is available in your build script.`,
+        e
+      );
+    }
+    if (!projectsLines) {
+      return;
+    }
+    const { projectName, compositeProjects } = processProjects(projectsLines);
+
+    projectNames.add(projectName);
+    compositeProjects.forEach((compositeProject) =>
+      projectNames.add(compositeProject)
+    );
+
+    settingsFileToProjectNameMap.set(settingFile, projectName);
+  });
+
+  return {
+    projectReportLines,
+    settingsFileToProjectNameMap,
+    projectNames,
+  };
 }
 
 export function processProjectReports(
@@ -202,5 +268,47 @@ export function processProjectReports(
     gradleFileToOutputDirsMap,
     gradleProjectToTasksTypeMap,
     gradleProjectToProjectName,
+  };
+}
+
+export function processProjects(projectsLines: string[]): {
+  projectName: string;
+  compositeProjects: string[];
+} {
+  let compositeProjects: string[] = [];
+  let projectName: string;
+  for (const line of projectsLines) {
+    if (line.startsWith('Root project')) {
+      projectName = line
+        .substring('Root project '.length)
+        .replaceAll("'", '')
+        .trim();
+      continue;
+    }
+    if (projectName) {
+      const [indents, dep] = line.split('--- ');
+      if (indents === '\\' || indents === '+') {
+        let includedBuild;
+        if (dep.startsWith('Included build ')) {
+          includedBuild = dep.substring('Included build '.length);
+        } else if (dep.startsWith('Project ')) {
+          includedBuild = dep.substring('Project '.length);
+        }
+        includedBuild = includedBuild
+          .replace(/ \(n\)$/, '')
+          .replaceAll("'", '')
+          .trim();
+        includedBuild = includedBuild.startsWith(':')
+          ? includedBuild.substring(1)
+          : includedBuild;
+        if (includedBuild) {
+          compositeProjects.push(includedBuild);
+        }
+      }
+    }
+  }
+  return {
+    projectName,
+    compositeProjects,
   };
 }

@@ -113,7 +113,7 @@ function createGradleProject(
       string
     >;
     let tasks: GradleTask[] = [];
-    for (let [taskName, taskType] of tasksTypeMap.entries()) {
+    for (let [taskName, taskType] of tasksTypeMap?.entries() ?? []) {
       tasks.push({
         type: taskType,
         name: taskName,

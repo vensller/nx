@@ -32,6 +32,7 @@ describe('@nx/gradle/plugin', () => {
         ['proj', new Map([['test', 'Test']])],
       ]),
       gradleProjectToProjectName: new Map<string, string>([['proj', 'proj']]),
+      projectNames: new Set(['proj']),
     };
     cwd = process.cwd();
     process.chdir(tempFs.tempDir);

@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, type RefObject } from 'react';
 
 /**
  * From https://www.npmjs.com/package/react-hubspot-form
@@ -16,8 +16,8 @@ interface HubspotFormProps {
   formId?: string;
   noScript?: boolean;
   loading?: any;
-  onSubmit?: (formData) => void;
-  onReady?: (form) => void;
+  onSubmit?: (formData: any) => void;
+  onReady?: (form: any) => void;
 }
 
 export class HubspotForm extends Component<
@@ -25,9 +25,9 @@ export class HubspotForm extends Component<
   { loaded: boolean }
 > {
   id: number;
-  el?: HTMLDivElement | null = null;
+  el?: RefObject<HTMLDivElement>;
 
-  constructor(props) {
+  constructor(props: HubspotFormProps) {
     super(props);
     this.state = {
       loaded: false,
@@ -56,8 +56,8 @@ export class HubspotForm extends Component<
 
       const options = {
         ...props,
-        target: `#${this.el?.getAttribute(`id`)}`,
-        onFormSubmit: ($form) => {
+        target: `#${this.el?.current?.getAttribute(`id`)}`,
+        onFormSubmit: ($form: { serializeArray: () => any }) => {
           // ref: https://developers.hubspot.com/docs/methods/forms/advanced_form_options
           const formData = $form.serializeArray();
           if (this.props.onSubmit) {
@@ -87,7 +87,7 @@ export class HubspotForm extends Component<
     if (this.el === null) {
       return;
     }
-    const form = this.el?.querySelector(`iframe`);
+    const form = this.el?.current?.querySelector(`iframe`);
     if (form) {
       this.setState({ loaded: true });
       if (this.props.onReady) {
@@ -111,7 +111,7 @@ export class HubspotForm extends Component<
     return (
       <>
         <div
-          ref={(el) => (this.el = el)}
+          ref={this.el}
           id={`reactHubspotForm${this.id}`}
           style={{ display: this.state.loaded ? 'block' : 'none' }}
         />

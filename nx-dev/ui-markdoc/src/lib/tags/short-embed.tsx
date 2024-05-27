@@ -22,12 +22,12 @@ export const shortEmbeds: Schema = {
   transform(node, config) {
     const videoData = node
       .transformChildren(config)
-      .filter((child) => child && child.name === 'ShortVideo')
+      .filter((child) => child && child['name'] === 'ShortVideo')
       .map((short) =>
         typeof short === 'object'
           ? {
-              title: short?.attributes.title,
-              embedUrl: short?.attributes.embedUrl,
+              title: short['attributes'].title,
+              embedUrl: short['attributes'].embedUrl,
             }
           : null
       );

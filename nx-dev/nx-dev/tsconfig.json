@@ -1,11 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "jsx": "preserve",
     "allowJs": true,
     "esModuleInterop": true,
@@ -21,13 +17,9 @@
       {
         "name": "next"
       }
-    ],
+    ]
   },
-  "types": [
-    "node",
-    "jest"
-  ],
-  "typeRoots": ["./node_modules/@types", "../../graph/shared/src/globals.d.ts"],
+  "types": ["node", "jest"],
   "include": [
     "**/*.js",
     "**/*.ts",

@@ -4,10 +4,10 @@ import type { BlogAuthor } from '@nx/nx-dev/data-access-documents/node-only';
 
 export function BlogAuthors({
   authors,
-  showAuthorDetails = false
+  showAuthorDetails = false,
 }: {
-  authors: BlogAuthor[]
-  showAuthorDetails?: boolean
+  authors: BlogAuthor[];
+  showAuthorDetails?: boolean;
 }): JSX.Element {
   return (
     <div className="relative isolate flex items-center -space-x-2">
@@ -23,7 +23,7 @@ export function BlogAuthors({
             src={`/documentation/blog/images/authors/${author.name}.jpeg`}
             className="relative inline-block h-6 w-6 rounded-full ring-1 ring-white grayscale dark:ring-slate-900"
           />
-          { showAuthorDetails && <AuthorDetail author={author} /> }
+          {showAuthorDetails && <AuthorDetail author={author} />}
         </div>
       ))}
     </div>

@@ -1,6 +1,6 @@
 'use client';
 import { sendPageViewEvent } from '@nx/nx-dev/feature-analytics';
-import {  NextSeo } from 'next-seo';
+import { NextSeo } from 'next-seo';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 

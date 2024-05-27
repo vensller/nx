@@ -15,7 +15,7 @@ export class FetchProjectGraphService implements ProjectGraphService {
 
     const response = await fetch(request);
 
-    return response.json();
+    return response.json() as Promise<string>;
   }
 
   async getProjectGraph(url: string): Promise<ProjectGraphClientResponse> {
@@ -23,7 +23,7 @@ export class FetchProjectGraphService implements ProjectGraphService {
 
     const response = await fetch(request);
 
-    return response.json();
+    return response.json() as Promise<ProjectGraphClientResponse>;
   }
 
   async getTaskGraph(url: string): Promise<TaskGraphClientResponse> {
@@ -31,7 +31,7 @@ export class FetchProjectGraphService implements ProjectGraphService {
 
     const response = await fetch(request);
 
-    return response.json();
+    return response.json() as Promise<TaskGraphClientResponse>;
   }
 
   async getSourceMaps(
@@ -41,7 +41,7 @@ export class FetchProjectGraphService implements ProjectGraphService {
 
     const response = await fetch(request);
 
-    return response.json();
+    return response.json() as Promise<Record<string, Record<string, string[]>>>;
   }
 
   setTaskInputsUrl(url: string) {
@@ -59,6 +59,6 @@ export class FetchProjectGraphService implements ProjectGraphService {
     });
 
     const response = await fetch(request);
-    return (await response.json())[taskId];
+    return (await response.json())[taskId] as Record<string, string[]>;
   }
 }

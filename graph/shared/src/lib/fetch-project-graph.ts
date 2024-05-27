@@ -14,5 +14,5 @@ export async function fetchProjectGraph(
     (graph) => graph.id === selectedWorkspaceId
   );
 
-  return await projectGraphService.getProjectGraph(projectInfo.projectGraphUrl);
+  return await projectGraphService.getProjectGraph(projectInfo!.projectGraphUrl);
 }

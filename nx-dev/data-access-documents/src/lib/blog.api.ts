@@ -22,6 +22,9 @@ export class BlogApi {
 
   async getBlogs(): Promise<BlogPostDataEntry[]> {
     const files: string[] = await readdir(this.options.blogRoot);
+    const authors = JSON.parse(
+      readFileSync(join(this.options.blogRoot, 'authors.json'), 'utf8')
+    );
     const allPosts: BlogPostDataEntry[] = [];
 
     for (const file of files) {
@@ -34,7 +37,9 @@ export class BlogApi {
         content,
         title: frontmatter.title ?? null,
         description: frontmatter.description ?? null,
-        authors: frontmatter.authors ?? [],
+        authors: authors.filter((author) =>
+          frontmatter.authors.includes(author.name)
+        ),
         date: this.calculateDate(file, frontmatter),
         cover_image: frontmatter.cover_image
           ? `/documentation${frontmatter.cover_image}` // Match the prefix used by markdown parser
@@ -105,7 +110,7 @@ export class BlogApi {
   async getBlogPostBySlug(
     slug: string | null
   ): Promise<BlogPostDataEntry | undefined> {
-    if (!slug) return undefined;
+    if (!slug) throw new Error(`Could not find blog post with slug: ${slug}`);
     return (await this.getBlogs()).find((post) => post.slug === slug);
   }
 

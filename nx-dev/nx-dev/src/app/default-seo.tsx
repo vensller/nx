@@ -1,6 +1,6 @@
 'use client';
 import { sendPageViewEvent } from '@nx/nx-dev/feature-analytics';
-import { DefaultSeo } from 'next-seo';
+import {  NextSeo } from 'next-seo';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -18,7 +18,7 @@ export default function DefaultSeoComponent({ gaMeasurementId }) {
   }, [pathName, searchParams, lastPath, gaMeasurementId]);
 
   return (
-    <DefaultSeo
+    <NextSeo
       title="Nx: Smart Monorepos · Fast CI"
       description="Nx is a build system with built-in tooling and advanced CI capabilities. It helps you maintain and scale monorepos, both locally and on CI."
       openGraph={{
@@ -42,6 +42,7 @@ export default function DefaultSeoComponent({ gaMeasurementId }) {
         site: '@nxdevtools',
         cardType: 'summary_large_image',
       }}
+      useAppDir={true}
     />
   );
 }
